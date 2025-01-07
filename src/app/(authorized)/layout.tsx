@@ -1,12 +1,19 @@
 import { getAuthSession } from "@/server/auth/config";
 import { redirect } from "next/navigation";
+import React from "react";
 
-async function HomePage() {
+const authorizedLayout = async ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const session = await getAuthSession();
+
   if (!session?.user) {
     redirect("/sign-in");
   }
-  return <div>hello</div>;
-}
 
-export default HomePage;
+  return <>{children}</>;
+};
+
+export default authorizedLayout;
