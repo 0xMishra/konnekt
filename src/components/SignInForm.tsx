@@ -21,7 +21,7 @@ export const SignInForm = async () => {
             >
               <CardHeader className="w-[100%]">
                 <CardTitle className="w-[100%] text-center text-4xl">
-                  <h1>Welcome to </h1>
+                  <h1 className="text-white">Welcome to </h1>
                   <h2 className="bg-clip-text tracking-tighter text-[#4752C4]">
                     konnekt
                   </h2>{" "}

@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+  overflow-x: hidden;
+  /* background-color: var(--chat-background); */
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -70,7 +74,7 @@
     --sidebar-background: #2b2d31;
     --sidebar-hover-background: #35373c;
     --text-color-in-chat: #dbdee1;
-    --text-color-in-sidebar: #323338;
+    --text-color-in-sidebar: #9ca3af;
     --text-color-in-sidebar-on-hover: #dbdee1;
     --server-list-background: #1e1f22;
     --add-button-background: #23a55a;
