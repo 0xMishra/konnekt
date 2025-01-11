@@ -3,7 +3,7 @@
 @tailwind utilities;
 body {
   overflow-x: hidden;
-  /* background-color: var(--chat-background); */
+  background-color: var(--chat-background);
 }
 @layer base {
   :root {

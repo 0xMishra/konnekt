@@ -87,8 +87,8 @@ model Server {
 
 model Channel {
   id        String    @id @default(cuid())
-  server    Server?   @relation(fields: [serverId], references: [id], onDelete: Cascade)
-  serverId  String?
+  server    Server    @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  serverId  String
   creator   User      @relation("channels created", fields: [creatorId], references: [id])
   creatorId String
   name      String
