@@ -19,23 +19,40 @@ const serverIdLayout = async ({
     redirect("/");
   }
 
-  const servers = await db.server.findMany({
+  let servers = await db.server.findMany({
     select: {
       id: true,
       name: true,
       image: true,
-      members: { select: { id: true }, where: { id: session.user.id } },
-      channels: { select: { id: true } },
     },
+
+    where: { creatorId: session.user.id },
+  });
+
+  const channels = await db.channel.findMany({
+    select: { id: true, serverId: true },
   });
 
   if (servers.length === 0) {
-    redirect("/");
+    servers = await db.server.findMany({
+      select: {
+        id: true,
+        name: true,
+        image: true,
+      },
+      where: { members: { some: { id: session.user.id } } },
+    });
+
+    if (servers.length === 0) redirect("/");
   }
   return (
     <main className="flex h-screen w-screen items-center justify-end">
       <div className="flex h-full w-[100%] items-center justify-end">
-        <ServersList servers={servers} currentServerId={serverId} />
+        <ServersList
+          channels={channels}
+          servers={servers}
+          currentServerId={serverId}
+        />
         {children}
       </div>
     </main>

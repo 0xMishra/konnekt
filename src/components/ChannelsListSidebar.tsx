@@ -1,5 +1,6 @@
 import {
   ChevronDown,
+  Ellipsis,
   Hash,
   Plus,
   Settings,
@@ -8,6 +9,7 @@ import {
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Link from "next/link";
+import { CreateNewChannelModal } from "./CreateNewChannelModal";
 
 export const ChannelsListSidebar = ({
   serverName,
@@ -44,38 +46,45 @@ export const ChannelsListSidebar = ({
                 {category.category}
               </h3>
               <button className="">
-                <Plus />
+                <CreateNewChannelModal
+                  serverId={currentServerId}
+                  serverName={serverName}
+                />
               </button>
             </div>
             <ul className="mt-2 space-y-1">
               {category.items.map((channel, idx) => (
-                <li
-                  className={`cursor-pointer rounded px-2 py-2 text-lg hover:bg-sidebar-hover-background hover:text-text-color-in-chat ${channel.id === currentChannelId ? "bg-sidebar-hover-background text-text-color-in-chat" : ""}`}
-                  key={idx}
-                >
-                  {category.type === "text" ? (
-                    <div className="flex items-center">
-                      <Hash className="pr-1" />
-                      <Link href={`${route}/${channel.id}`}>
-                        {channel.name}
-                      </Link>
-                    </div>
-                  ) : category.type === "audio" ? (
-                    <div className="flex items-center">
-                      <Volume1 />
-                      <Link href={`${route}/${channel.id}`}>
-                        {channel.name}
-                      </Link>
-                    </div>
-                  ) : (
-                    <div className="flex items-center">
-                      <Video />
-                      <Link href={`${route}/${channel.id}`}>
-                        {channel.name}
-                      </Link>
-                    </div>
-                  )}
-                </li>
+                <Link href={`${route}/${channel.id}`} key={idx}>
+                  <li
+                    className={`cursor-pointer rounded px-2 py-2 text-lg hover:bg-sidebar-hover-background hover:text-text-color-in-chat ${channel.id === currentChannelId ? "bg-sidebar-hover-background text-text-color-in-chat" : ""}`}
+                  >
+                    {category.type === "text" ? (
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <Hash className="pr-1" />
+                          {channel.name}
+                        </div>
+                        <Ellipsis />
+                      </div>
+                    ) : category.type === "audio" ? (
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <Volume1 className="pr-1" />
+                          {channel.name}
+                        </div>
+                        <Ellipsis />
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <Video className="pr-1" />
+                          {channel.name}
+                        </div>
+                        <Ellipsis />
+                      </div>
+                    )}
+                  </li>
+                </Link>
               ))}
             </ul>
           </div>

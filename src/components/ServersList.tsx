@@ -1,5 +1,4 @@
 import { getAuthSession } from "@/server/auth/config";
-import { db } from "@/server/db";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { CreateNewServerModal } from "./CreateNewServerModal";
@@ -9,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 export const ServersList = async ({
   currentServerId,
   servers,
+  channels,
 }: {
   servers: {
     id: string;
@@ -16,22 +16,15 @@ export const ServersList = async ({
     image: string | null;
   }[];
   currentServerId: string;
+  channels: {
+    serverId: string;
+    id: string;
+  }[];
 }) => {
   const session = await getAuthSession();
   if (!session) {
     return "";
   }
-
-  const channelsForThisServer = await db.server.findUnique({
-    where: { id: currentServerId },
-    select: {
-      name: true,
-      channels: { select: { id: true } },
-    },
-  });
-
-  const channelId = channelsForThisServer?.channels[0]?.id;
-  console.log("server:", channelsForThisServer?.name, "channel:", channelId);
 
   return (
     <div className="hidden h-full w-16 flex-col items-center space-y-3 bg-server-list-background p-4 text-gray-300 sm:flex">
@@ -39,7 +32,7 @@ export const ServersList = async ({
 
       <div className="h-px w-8 bg-gray-700"></div>
 
-      {servers.map((server, index) => (
+      {servers.map((server) => (
         <div
           key={server.id}
           className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full text-xl"
@@ -47,7 +40,7 @@ export const ServersList = async ({
         >
           {server.image ? (
             <Link
-              href={`/server/${server.id}/channel/${channelId}`}
+              href={`/server/${server.id}/channel/${channels.find((ch) => ch.serverId === server.id)!.id}`}
               className={`flex items-center justify-center ${server.id === currentServerId ? "relative -left-3" : ""}`}
             >
               {server.id === currentServerId ? (
@@ -64,7 +57,7 @@ export const ServersList = async ({
             </Link>
           ) : (
             <Link
-              href={`/server/${server.id}/channel/${channelId}`}
+              href={`/server/${server.id}/channel/${channels.find((ch) => ch.serverId === server.id)!.id}`}
               className={`flex items-center justify-center ${server.id === currentServerId ? "relative -left-3" : ""}`}
             >
               {server.id === currentServerId ? (
